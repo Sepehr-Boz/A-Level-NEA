@@ -1,0 +1,166 @@
+<html>
+	<head>
+		<title>
+			Joint Effort
+		</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<link href="{{url_for('static', filename='css/collab.css')}}" rel="stylesheet"></link>
+	</head>
+
+	<div class="top">
+		<form method="POST">
+			<button type="submit" id="return_button">RETURN</button>
+		</form>
+		<input id="title" type="text" value="Joint Effort">
+		<button type="button" id="run_button">RUN</button>
+	</div>
+
+	<div class="side">
+		<button type="button" id="save_button">SAVE</button>
+		<button type="button" id="open_button">OPEN</button>
+	</div>
+
+	<div class="main">
+		<textarea id="code"></textarea>
+		<textarea id="console"></textarea>
+
+		<div class="chat_div">
+			<ul id="chat"></ul>
+			<input type="text" id="user_message">
+			<button type="submit" id="enter">Enter</button>
+		</div>
+	</div>
+	
+	<body>
+	
+	<!--contains javascript functions used in the script-->
+	<script type="text/javascript" src="{{url_for('static', filename='js/collab.js')}}"></script>
+	<script type="text/javascript">
+//this script is run after the page is loaded
+
+$(document).ready(function() {
+
+const socket = io.connect('{{local_host_ip}}');
+
+const room = "{{room}}";
+
+const url = window.location.href; //gets url
+
+//identifier for if the document is an opened or new file
+var opened = new Object;
+
+socket.on('connect', function() {
+	socket.emit("JOIN", {"room": room, "url_info": url})
+});
+
+socket.on('POPUP_SAVE', function() {
+	alert("Current file has been saved")
+});
+
+socket.on('POPUP_OPEN', function(data) {
+	let file_names = data["files"] //file_names
+	let file_ids = data["file_ids"] //file_ids
+	var result = false;
+	//break out if names and ids are empty
+
+	//get the name of the file to open
+	while (result == false) {
+		let txt = SelectFile(file_names, "Enter file")
+		if (txt == null) {
+			return;
+		}
+		result = InFiles(txt, file_names)
+	}
+	
+	//find out the file id belonging to the name
+	var id = FindFileID(txt, file_names, file_ids);
+	opened = {"true": id}
+	socket.emit("OPEN_FILE", {"name": txt, "file_id": id, "room": room} );
+});
+
+$('#save_button').on('click', function() {
+	//dont allow the file to be saved if the title is empty
+	if ($("#title").val() == "") {
+		alert("Enter a title for the document");
+	}
+	else {
+		let data = $("#code").val();
+		let name = $('#title').val();
+		let values = {"code": data, "room": room, "name": name, "url_info": url};
+		if (Object.keys(opened)[0] == "true") {
+			values["file_id"] = Object.values(opened)[0];
+		}
+		socket.emit("SAVE", values);
+	}
+});
+
+$('#open_button').on('click', function() {
+	socket.emit("OPEN", {"room": room, "url_info": url} );
+});
+
+//take out if doesnt work by 17th
+$('#run_button').on('click', function() {
+	let code = $("#code").val();
+	socket.emit("RUN", {"code": code, "room": room});
+});
+
+//updates the text in the main textarea
+socket.on('CODE', function(data) {
+	//reassign text in #code
+	$("#code").val(data);
+});
+
+//updates the title of the document
+socket.on('TITLE', function(data){
+	$("#title").val(data);
+})
+
+
+//take out if doesnt work by 17th + remove console textarea
+socket.on("CONSOLE", function(data) {
+	//reassign text in #console whenever the code is run
+	$("#console").val(data);
+});
+
+window.addEventListener("beforeunload", function() {
+	socket.emit("LEAVE", {"room": room, "url_info": url});
+})
+
+//PROBLEM WITH KEYUP, page is only updated when a user finishes entering, so if the current users are idle
+//and a new user joins, the page will be blank and may become empty if the new user enters something
+$("#code").keyup( function() {
+	var data = $("#code").val()
+	socket.emit("MESSAGE", {"data": data, "box": "CODE", "room": room} )
+});
+
+//PROBLEM WITH FUNCTION AND ONKEYPRESS="", will have the same problem as KEYUP
+//function send_data() {
+//	var data = $("#code").val() + "CODE"
+//	socket.emit("message", {"data": data, "room": room} );
+//};
+
+//PROBLEM WITH setInterval(), delay between sending data to server and the page being updated so their 
+//may be inputs in the delay that are not recorded and deleted after the update
+//setInterval(function() {
+//	let data = $("#code").val()
+//	socket.emit("message", {"data": data, "box": "CODE", "room": room} ); //sends chat text to server
+//},1000); //loops every n milliseconds
+//interval shouldnt be too quick or too slow as it will miss inputs at extremes
+
+$('#enter').on('click', function() {
+	let data = $("#user_message").val();
+	socket.emit("MESSAGE", {"data": data, "box": "CHAT", "room": room} )
+	$('#userMessage').val('');
+});
+
+socket.on('CHAT', function(data) {
+	//append data to #chat
+	$('#chat').append("<li>" + data + "</li>");
+});
+
+});
+	</script>
+
+	</body>
+</html>

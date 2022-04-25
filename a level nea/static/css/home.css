@@ -1,0 +1,16 @@
+html {
+    background-color: darkgray;
+}
+
+.links {
+    text-align: right;
+    font-size: x-large;
+    color: cadetblue;
+}
+
+.title {
+    text-align: center;
+    font-size: 100px;
+    color: cadetblue;
+    text-shadow: 4px 4px 12px;
+}

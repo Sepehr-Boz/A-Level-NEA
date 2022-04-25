@@ -1,0 +1,107 @@
+<html>
+    <title>
+        Joint Effort
+    </title>
+
+    <head>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <link href="{{url_for('static', filename='css/profile.css')}}" rel="stylesheet"></link>
+    <!-- things on profile page: picture, name, time since last online, host and join options for classrooms-->
+        <div class="side">
+            Name:
+            <br>
+            {{user}}
+            <br><br><br><br>
+            Email:
+            <br>
+            {{email}}
+            <br><br><br><br>
+            ID:
+            <br>
+            {{id}}
+        </div>
+    </head>
+
+    <!--add option that routes to flask to add either a name/email if one hasnt been added yet-->
+    <body>
+        <div class="options">
+            <form method="POST">
+                <br>
+                <input type="text" id="host" name="create_session" placeholder="Create Session">
+                <input type="submit" value="Create">
+                <br>
+            </form>
+            <form method="POST">
+                <br>
+                <input type="text" id="join" name="join_session" placeholder="Join Session">
+                <input type="submit" value="Join">
+                <br>
+            </form>
+        </div>
+    <script type="text/javascript" src="{{url_for('static', filename='js/profile.js')}}"></script>
+    <script type="text/javascript">
+
+$(document).ready(function() {
+
+const socket = io.connect('{{local_host_ip}}');
+
+    //files should be a dictionary with ids as the key and names as the values
+var files = JSON.parse('{{files | tojson}}');
+
+    //get the user id from the url
+const url = window.location.href;
+const user_id = GetUserID(url);
+
+socket.on('connect', function() {
+    socket.emit("JOIN", {"room": null, "url_info": url});
+});
+
+    //extract all the data and create a link for every file with the name of the file
+for (let k in files) {
+    let file_id = k;
+    let file_name = files[k];
+    CreateBar(file_id, file_name, user_id);
+};
+
+//run whenever any button is clicked
+$("button").on("click", function() {
+
+    //set base values that will always be passed
+    let values = {"file_id": this.id, "user_id": user_id}
+
+    //switch case for if any new variables need to be passed to the server
+    switch (this.value) {
+        case "RENAME":
+            let file_name = NewFileName();
+            values["new_name"] = file_name;
+            break;
+        case "COPY":
+            break;
+        case "DELETE":
+            break;
+    }
+
+    //emit to the button function in server with dictionary
+    socket.emit(this.value, values)
+
+    location.reload()
+})
+
+window.addEventListener("beforeunload", function() {
+    socket.emit("LEAVE", {"room": None, "url_info": url});
+})
+
+});
+
+    </script>
+    <div class="side">
+        Files:
+    </div>
+
+    </body>
+
+    <!-- section  where you can view the history of files-->
+    <!-- display the names of the files and have them as links that go to history with the file id-->
+    
+</html>

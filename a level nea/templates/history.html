@@ -1,0 +1,96 @@
+<html>
+    <!-- should display the history of every of the users files-->
+    <!-- display the content with 2 buttons that allow moving onto the next or previous edit and displaying WHEN and WHO did the change/saved the document-->
+
+    <!-- top left = return button that goes back to profile top middle =  title of the file-->
+    <!-- middle left = button that goes to previous edit middle right = button tha goes to next edit-->
+    <!-- middle = textarea that contains content THAT ISNT EDITABLE DONT LET THE CONTENT BE EDITABLE-->
+    <!-- underneath the title, have the user who saved the document-->
+    <title>
+        Joint Effort
+    </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/history.js')}}"></script>
+
+    <link href="{{url_for('static', filename='css/history.css')}}" rel="stylesheet"></link>
+
+    <script type="text/javascript">
+$(document).ready(function() {
+
+    const history = JSON.parse('{{files | tojson}}')
+
+    //lists will have a 1-1 index relationship where the data for a history will be at the same index for each
+
+    //var current index since it will be changed when the buttons are pressed
+    var current_index = 0;
+    //const the file details as they will stay constant
+    const file_names = [];
+    const file_contents = [];
+    const edits = [];
+
+    //get the name of the file
+    file_names.push(Object.keys(history))
+    //get the files history
+    file_edits = history[file_names]
+    //get the number of edits done to the file
+    const max_length = Object.keys(file_edits).length
+
+    for (let key in file_edits) {
+        //get the edit details and append to the lists
+        let date_edited = key
+        let content = ReFormatContent(file_edits[key][0])
+        let editor_name = file_edits[key][1]
+        file_contents.push(content)
+        edits.push([date_edited, editor_name])
+    }
+
+    //start with the first history of the file
+    let file = [file_names[0], file_contents[current_index], edits[current_index]]
+
+    UpdateText(file);
+
+$("#previous_edit").on("click", function() {
+    if (current_index > 0) {
+        current_index --
+    }
+
+    let file = [file_names[0], file_contents[current_index], edits[current_index]]
+    UpdateText(file);
+});
+
+$("#next_edit").on("click", function() {
+    if (current_index < max_length) {
+        current_index ++;
+    }
+
+    let file = [file_names[0], file_contents[current_index], edits[current_index]]
+    UpdateText(file)
+});
+    
+});
+    </script>
+
+    <!--<form method="POST">
+        <input type="submit" value="RETURN">
+    </form>-->
+
+    <div class="top">
+
+        <h1 id="file_name">
+            FILE_NAME
+        </h1>
+        <h5 id="editor_name">
+            EDITOR_NAME
+        </h5>
+        <h5 id="time_edited">
+            TIME_EDITED
+        </h5>
+
+    </div>
+
+    <div class="bottom">
+        <button type="button" id="previous_edit">PREVIOUS</button>
+        <textarea readonly id="content">CONTENT</textarea>
+        <button type="button" id="next_edit">NEXT</button>
+    </div>
+</html>

@@ -1,0 +1,47 @@
+html {
+    background-color: darkgray;
+}
+
+#content {
+    width: 350px;
+    height: 420px;
+}
+
+button {
+    width: 100px;
+    height: 70px;
+    position: relative;
+    bottom: 250px;
+}
+
+#file_name {
+    font-size: 70px;
+}
+
+#editor_name {
+    font-size: 30px;
+}
+
+#time_edited {
+    font-size: 20px;
+}
+
+.top {
+    background-color: lightgray;
+    text-align: center;
+    position: relative;
+}
+
+.bottom {
+    background-color: lightgray;
+    text-align: center;
+    position: relative;
+}
+
+#next_edit {
+    left: 50px;
+}
+
+#previous_edit {
+    right: 50px;
+}

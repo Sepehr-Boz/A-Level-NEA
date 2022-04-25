@@ -1,0 +1,78 @@
+html {
+    background-color: darkgray;
+}
+
+.options {
+    position: absolute;
+    left: 310px;
+    bottom: 360px;
+    background-color: lightgray;
+    color: black;
+    width: 1200px;
+    height: 340px;
+    margin-top: 18px;
+    text-align: center;
+    border-radius: 20px;
+    color: gray;
+    box-shadow: 3px 3px 10px;
+}
+
+input {
+    width: 100px;
+    height: 40px;
+}
+
+#host {
+    background-color: white;
+    width: 300px;
+    color: lightskyblue;
+}
+
+#join {
+    background-color:  white;
+    width: 300px;
+    color: lightskyblue;
+}
+
+.side {
+    position: relative;
+    border: black;
+    width: 300px;
+    height: 350px;
+    background-color: darkgray;
+    text-align: left;
+    font-size: 20px;
+}
+
+.bar {
+    position: relative;
+    left: 300px;
+    bottom: 350px;
+    background-color: white;
+    border: 4px;
+    border-color: grey;
+    width: 1160px;
+    height: 30px;
+    text-align: left;
+    padding: 20px;
+    background-color: lightgray;
+    border-radius: 20px;
+    font-size: 20px;
+    color: gray;
+    box-shadow: 3px 0px 5px;
+}
+
+[value*="RENAME"] {
+    color: blue;
+    font-size: 20px;
+}
+
+[value*="COPY"] {
+    color: blue;
+    font-size: 20px;
+}
+
+[value*="DELETE"] {
+    color: blue;
+    font-size: 20px;
+}

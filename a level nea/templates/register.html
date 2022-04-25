@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/forms.css')}}">
+    <div class="register_box">
+    <head>
+
+        <title>
+            Joint Effort
+        </title>
+
+        <h1>
+            REGISTER
+        </h1>
+
+    </head>
+
+    <body>
+
+        <form method="POST"> <!--no action taken as it will either loop back to login if details false or move onto host html - determined by the javascript-->
+            <a>{{error_message}}</a>
+
+            <p>
+                <label for="email">Enter email</label><br>
+                <input type="text" id="email" name="email" value="" placeholder="Email" required><br>
+            </p>
+
+            <br>
+            <br>
+
+            <p>
+                <label for="name">Enter Username</label><br>
+                <input type="text" id="name" name="name" value="" placeholder="Username" required><br>
+            </p> <!-- dont pass anything into value as it'll be set to the input, and allows for placeholder to also be used-->
+
+            <br>
+            <br>
+
+            <p>
+                <label for="pass">Enter Password</label><br>
+                <input type="password" id="pass" name="pass" value="" placeholder="Password" required><br>
+                <a>Passwords must have 8 characters, a number, and a special character ( ! ? $ etc. )</a>
+            </p>
+
+            <br>
+            <br>
+
+            <p>
+                <label for="pass_check">Re-enter Password</label><br>
+                <input type="password" id="pass_check" name="pass_check" value="" placeholder="Password" required><br>
+            </p>
+
+            <input type="submit" value="Submit">
+
+            <br>
+
+            <a href="login">Already have an account?</a>
+        </form>
+        <!--should be "DO have an account?" if on register page and "DONT have an account?" on login page so write function-->
+
+    </body>
+    </div>
+</html>

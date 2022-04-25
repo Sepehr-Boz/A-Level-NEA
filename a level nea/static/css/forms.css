@@ -1,0 +1,56 @@
+.login_box {
+    text-align: center;
+    background-color: white;
+    width: 350px;
+    height: 500px;
+    border: 25px;
+    padding: 30px;
+    margin: auto;
+    outline: solid black;
+    box-shadow: 3px 3px 10px;
+}
+
+.register_box {
+    text-align: center;
+    background-color: white;
+    width: 350px;
+    height: 640px;
+    border: 25px;
+    padding: 30px;
+    margin: auto;
+    outline: solid black;
+    box-shadow: 3px 3px 10px;
+}
+
+a {
+    color: lightcoral;
+}
+
+input {
+    margin: 5px 10px 5px 0px;
+    width: 280px;
+}
+
+p {
+    border: solid black;
+}
+
+form {
+    outline: solid white; 
+    margin: 80px 10px;
+    text-align: left;
+}
+
+input[type="submit"] {
+    color: cadetblue;
+    background-color: darkgray;
+    width: 70px;
+}
+
+
+
+html {
+    background-color: darkgray;
+    /*background-image: url("img/nor_lights.jpg");
+    background-size: 100% 150%;*/
+}

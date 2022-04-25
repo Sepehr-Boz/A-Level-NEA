@@ -1,0 +1,87 @@
+html {
+    background-color: darkgray;
+}
+
+.top {
+    width: unset;
+    height: 100px;
+}
+
+#title {
+    position: relative;
+    left: 170px;
+    font-size: 20px;
+}
+
+#run_button {
+    position: relative;
+    left: 170px;
+}
+
+.side {
+    background-color: lightgray;
+    position: relative;
+    width: 150px;
+    height: 600px;
+}
+
+#save_button {
+    position: relative;
+    left: 20px;
+    top: 30px;
+}
+
+#open_button {
+    position: relative;
+    left: 20px;
+    top: 70px;
+}
+
+.main {
+    background-color: lightgray;
+    position: relative;
+    bottom: 600px;
+    left: 150px;
+}
+
+.chat_div {
+    position: relative;
+    left: 920px;
+    bottom: 80px;
+}
+
+#code {
+    position: relative;
+}
+
+#console {
+    position: relative;
+}
+
+#chat {
+    position: relative;
+}
+
+#user_message {
+    position: relative;
+}
+
+#enter {
+    position: relative;
+}
+
+textarea {
+    background: white;
+    width: 450px;
+    height: 600px;
+}
+
+button {
+    width: 100px;
+    height: 40px;
+}
+
+input {
+    width: 300px;
+    height: 40px;
+}
